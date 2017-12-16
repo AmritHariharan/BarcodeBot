@@ -13,7 +13,6 @@ class GenerateImage:
 		reader = cv2.VideoCapture(filename)
 		success, image = reader.read()
 		success = True;
-		#n_colors = 1
 		width = 720
 		height = 480
 		px_count = 0
@@ -21,9 +20,11 @@ class GenerateImage:
 		#print("1: %s    2: %s" % (image.shape[0], image.shape[1]))
 		length = int(reader.get(cv2.CAP_PROP_FRAME_COUNT))
 		q_length = floor(length / width) # NOTE: THIS CANNOT BE 0
-		print("1: %d    2: %d" % (length, q_length))
-		#print("q length: %s" % q_length)
 
+		# Check that its not longer than 10 mins
+		if length > 14400:
+			print("Sorry, this video is too long, try again with a video under 10 minutes in length")
+			quit() # TODO: find a more elegant way to do this
 
 		while success:
 			success, image = reader.read()
