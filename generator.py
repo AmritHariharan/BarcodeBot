@@ -28,7 +28,6 @@ class GenerateImage:
             # 1. read in image
             success, image = reader.read()
             if im_count % q_length == 0:
-                #print('Processing image %d' % px_count)
                 pil_im = Image.fromarray(image) # get PIL image
                 
                 # 2. get enumerated list of colours
@@ -41,7 +40,7 @@ class GenerateImage:
                         most_freq = (count, colour)
                 
                 # 4. write to column of new image
-                colours.append(colour)
+                colours.append(most_freq)
                 # iterate
                 px_count += 1
             im_count += 1
@@ -49,10 +48,8 @@ class GenerateImage:
 
         # 5. write new image
         im_arr = np.array(colours)
-        print(len(colours))
-        print(len(im_arr))
         im_arr = np.resize(im_arr, (480,len(im_arr))) 
-        final = Image.fromarray(im_arr, 'RGB')
+        final = Image.fromarray(im_arr, mode='RGB')
         final.save('output.png')
         final.show()
 
