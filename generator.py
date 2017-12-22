@@ -40,7 +40,8 @@ class GenerateImage:
                         most_freq = (count, colour)
                 
                 # 4. write to column of new image
-                colours.append(most_freq)
+                colours.append(most_freq[1])
+
                 # iterate
                 px_count += 1
             im_count += 1
@@ -48,8 +49,10 @@ class GenerateImage:
 
         # 5. write new image
         im_arr = np.array(colours)
-        im_arr = np.resize(im_arr, (480,len(im_arr))) 
-        final = Image.fromarray(im_arr, mode='RGB')
+        im_arr = np.ascontiguousarray(np.resize(im_arr, (480, len(im_arr), 3))) 
+        print(im_arr.shape)
+        print(im_arr.T.shape)
+        final = Image.fromarray(im_arr.T, 'RGB')
         final.save('output.png')
         final.show()
 
