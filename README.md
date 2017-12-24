@@ -7,7 +7,7 @@ This was inspired by my original barcode project which can be found [here](https
 - [x] Add youtube-dl functionality
 - [x] Integrate twitter
 - [ ] Put in a Docker container(?)
-- [ ] Get it hosted on AWS
+- [ ] Get it hosted on AWS/Google Cloud/Azure(???)
 
 ## Tools Used
 
