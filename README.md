@@ -4,15 +4,13 @@ This was inspired by my original barcode project which can be found [here](https
 
 ## Todo:
 - [x] Get barcode generation working
-- [ ] Add youtube-dl functionality
-- [ ] Integrate twitter
+- [x] Add youtube-dl functionality
+- [x] Integrate twitter
 - [ ] Put in a Docker container(?)
 - [ ] Get it hosted on AWS
 
 ## Tools Used
 
-- Downloading videos: [youtube-dl](https://github.com/rg3/youtube-dl)
+- Downloading videos: [pytube](https://github.com/nficano/pytube)
 - Working with videos: [OpenCV](http://opencv-python-tutroals.readthedocs.io/en/latest/)
-- Twitter integration: 
-	- [Tweepy](http://www.tweepy.org/)
-	- [This tweepy tutorial](https://scotch.io/tutorials/build-a-tweet-bot-with-python)
+- Twitter integration: [Tweepy](http://www.tweepy.org/)

@@ -4,6 +4,9 @@ import cv2
 import numpy as np
 from math import floor
 
+# YouTube
+from pytube import YouTube
+
 # Twitter stuff
 import requests
 import tweepy
@@ -19,7 +22,7 @@ api = tweepy.API(auth)
 
 
 # Get the barcode from a video
-def generate(self, filename, outputfilename):
+def generate_barcode(self, filename, outputfilename):
     reader = cv2.VideoCapture(filename)
     success, image = reader.read()
     success = True;
@@ -77,14 +80,20 @@ def generate(self, filename, outputfilename):
 
 def tweet_image(url, username, status_id):
     filename = 'out_img.png'
-    # send a  get request
+    # send a get request
     request = requests.get(url, stream=True)
     if request.status_code == 200:
-        # 1. Get the url
+        # 1. Download it
+        yt = YouTube(link)
+        yt.streams.filter(only_video=True, file_extension='mp4').last().download()
 
-        # 2. Download it
+        # 2. Generate the barcode
+        outfile = yt.title + '.png'
+        generate_barcode(yt.title + '.mp4', outfile)
 
-        # 3. Generate the barcode
+        # 3. Tweet the image
+        api.update_status('@<username> here\'s \'%s\' as a #videobarcode' % yt.title, status_id)
+
     else:
         print('unable to handle request, sorry :(')
 
@@ -96,8 +105,11 @@ class BotStreamer(tweepy.StreamListener):
         status_id = status.id
 
         # get url from tweet text
+        msg = status.text.split()
+        link = msg[1]
+        print(link)
 
-        tweet_image(___, username, status_id)
+        tweet_image(link, username, status_id)
 
 
 def test():
