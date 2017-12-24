@@ -11,8 +11,8 @@ This was inspired by my original barcode project which can be found [here](https
 
 
 ## TODO:
-[] Get barcode generation working
-[] Add youtube-dl functionality
-[] Integrate twitter
-[] Put in a Docker container(?)
-[] Get it hosted on AWS
+- [x] Get barcode generation working
+- [ ] Add youtube-dl functionality
+- [ ] Integrate twitter
+- [ ] Put in a Docker container(?)
+- [ ] Get it hosted on AWS
