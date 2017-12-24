@@ -36,6 +36,7 @@ def generate_barcode(filename, outputfilename):
     out = image
 
     length = int(reader.get(cv2.CAP_PROP_FRAME_COUNT))
+    length = length/2 # TODO: Find a better fix than this...
     q_length = floor(length / width) # NOTE: THIS CANNOT BE 0
 
     # Check that its not longer than 10 mins
