@@ -13,4 +13,6 @@ This was inspired by my original barcode project which can be found [here](https
 
 - Downloading videos: [youtube-dl](https://github.com/rg3/youtube-dl)
 - Working with videos: [OpenCV](http://opencv-python-tutroals.readthedocs.io/en/latest/)
-- Twitter integration: [Tweepy](http://www.tweepy.org/)
+- Twitter integration: 
+	- [Tweepy](http://www.tweepy.org/)
+	- [This tweepy tutorial](https://scotch.io/tutorials/build-a-tweet-bot-with-python)
