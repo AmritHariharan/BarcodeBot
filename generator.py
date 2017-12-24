@@ -43,40 +43,48 @@ def generate_barcode(filename, outputfilename):
         print("Sorry, this video is too long, try again with a video under 30 minutes in length")
         quit() # TODO: find a more elegant way to do this
 
-    im_arr = np.zeros((height, width, 3))
+    # Check that its not too short
+    if length < width:
+        print('Sorry, this video is too short (or possible too high res)')
+        quit()
+
     counter = 0
 
     while success:
         # 1. read in image
         success, image = reader.read()
-        if im_count % q_length == 0:
-            pil_im = Image.fromarray(image) # get PIL image
-            
-            # 2. get enumerated list of colours
-            im_colours = pil_im.getcolors(width * height)
-            
-            # 3. get most dominant colour
-            most_freq = im_colours[0]
-            for count, colour in im_colours:
-                if count > most_freq[0]:
-                    print(most_freq[1])
-                    if most_freq[1] != (0,0,0):
-                        most_freq = (count, colour)
-            
-            # 4. write to column of new image
-            for i in range(height):
-                out[i][counter][0] = most_freq[1][0]
-                out[i][counter][1] = most_freq[1][1]
-                out[i][counter][2] = most_freq[1][2]
-
+        numpy_im = np.array(image)
+        if im_count == q_length:
+            im_count = 0
             counter += 1
+            for j in range(height):
+                pil_im = Image.fromarray(image[j].reshape(1,width,3)) # get row of image 
+                
+                # 2. get enumerated list of colours
+                im_colours = pil_im.getcolors(width)
+                
+                # 3. get most dominant colour in row
+                most_freq = im_colours[0]
+                for count, colour in im_colours:
+                    if count > most_freq[0]:
+                        most_freq = (count, colour)
+                
+                # 4. write to of new image
+                out[j][counter-1][0] = most_freq[1][0]
+                out[j][counter-1][1] = most_freq[1][1]
+                out[j][counter-1][2] = most_freq[1][2]
 
         # break if you reach the end of the image array
-        if (counter == width-1):
+        if (counter == width):
+            print('at width')
             break
         im_count += 1
-    im_count -= 1
 
+    print('length: {}'.format(length))
+    print('q_length: {}'.format(q_length))
+    print('im_count: {}'.format(im_count))
+    print('counter: {}'.format(counter))
+    print('width: {}'.format(width))
     # 5. write new image
     final = Image.fromarray(out, 'RGB')
     final.save(outputfilename)
@@ -86,7 +94,7 @@ def generate_barcode(filename, outputfilename):
 def tweet_image(link, username, status_id):
     # 1. Download it
     yt = YouTube(link)
-    yt.streams.filter(only_video=True, file_extension='mp4').last().download()
+    yt.streams.filter(only_video=True, file_extension='mp4').first().download()
 
     # 2. Generate the barcode
     outfile = yt.title + '.png'
@@ -130,11 +138,11 @@ class BotStreamer(tweepy.StreamListener):
 
 
 def test():
-    #generate_barcode('zodiac.mp4', 'zodiac.png')
+    generate_barcode('zodiac.mp4', 'zodiac2.png')
     generate_barcode('perfect.mp4', 'perfect.png')
 
 
-test()
+#test()
 
 myStreamListener = BotStreamer()
 
