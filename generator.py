@@ -88,12 +88,12 @@ def tweet_image(link, username, status_id):
     generate_barcode(yt.title + '.mp4', outfile)
 
     # 3. Tweet the image
-    api.update_with_media(outfile, '@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title), in_reply_to_status_id=status_id)
+    api.update_with_media(outfile, status='@{} here\'s \'{}\' as a #videobarcode'.format(username, yt.title), in_reply_to_status_id=status_id)
     print('@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title))
 
 
 def tweet_msg(msg, status_id):
-    api.update_status(msg, status_id)
+    api.update_status(status=msg, in_reply_to_status_id=status_id)
 
 
 class BotStreamer(tweepy.StreamListener):
@@ -110,11 +110,14 @@ class BotStreamer(tweepy.StreamListener):
 
         if url(link):
             if 'youtube' in link:
+                # is a link, tweet back the barcode
                 tweet_image(link, username, status_id)
             else:
-                tweet_msg('@%s sorry, this only works with full youtube links' % username, status_id)
+                # not a youtube link
+                tweet_msg('@{} sorry, I only work with full youtube links'.format(username), status_id)
         else:
-            tweet_msg('@%s sorry, \'%s\'  not a valid url' % (username, link), status_id)
+            # not a link
+            tweet_msg('@{} sorry, \'{}\'  not a valid url'.format(username, link), status_id)
 
 
 def test():
