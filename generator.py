@@ -88,7 +88,7 @@ def tweet_image(link, username, status_id):
     generate_barcode(yt.title + '.mp4', outfile)
 
     # 3. Tweet the image
-    api.update_status('@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title), status_id)
+    api.update_with_media(outfile, '@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title), in_reply_to_status_id=status_id)
     print('@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title))
 
 
