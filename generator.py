@@ -9,12 +9,11 @@ class GenerateImage:
         reader = cv2.VideoCapture(filename)
         success, image = reader.read()
         success = True;
-        width = 640
-        height = 360
-        px_count = 0
+        width = len(image[0])
+        height = len(image) 
         im_count = 1
         out = image
-        #print("1: %s    2: %s" % (image.shape[0], image.shape[1]))
+
         length = int(reader.get(cv2.CAP_PROP_FRAME_COUNT))
         q_length = floor(length / width) # NOTE: THIS CANNOT BE 0
 
@@ -42,15 +41,12 @@ class GenerateImage:
                         most_freq = (count, colour)
                 
                 # 4. write to column of new image
-                #colours.append((most_freq[1][0] + most_freq[1][1] + most_freq[1][2])/3)
-                #colours.append(most_freq[1])
                 for i in range(height):
                     out[i][counter][0] = most_freq[1][0]
                     out[i][counter][1] = most_freq[1][1]
                     out[i][counter][2] = most_freq[1][2]
 
                 # iterate
-                px_count += 1
                 counter += 1
             if (counter == width-1):
                 break
@@ -58,10 +54,8 @@ class GenerateImage:
         im_count -= 1
 
         # 5. write new image
-        #im_arr = np.array(colours)
-        #im_arr = np.ascontiguousarray(np.resize(im_arr, (480, len(im_arr), 3))) 
         final = Image.fromarray(out, 'RGB')
-        final.save('output.png')
+        final.save('output2.png')
         final.show()
 
 if __name__ == "__main__":
