@@ -6,6 +6,7 @@ from math import floor
 
 # YouTube
 from pytube import YouTube
+from validators import url
 
 # Twitter stuff
 import requests
@@ -77,30 +78,28 @@ def generate_barcode(self, filename, outputfilename):
     #final.show()
 
 
+def tweet_image(link, username, status_id):
+    # 1. Download it
+    yt = YouTube(link)
+    yt.streams.filter(only_video=True, file_extension='mp4').last().download()
 
-def tweet_image(url, username, status_id):
-    filename = 'out_img.png'
-    # send a get request
-    request = requests.get(url, stream=True)
-    if request.status_code == 200:
-        # 1. Download it
-        yt = YouTube(link)
-        yt.streams.filter(only_video=True, file_extension='mp4').last().download()
+    # 2. Generate the barcode
+    outfile = yt.title + '.png'
+    generate_barcode(yt.title + '.mp4', outfile)
 
-        # 2. Generate the barcode
-        outfile = yt.title + '.png'
-        generate_barcode(yt.title + '.mp4', outfile)
+    # 3. Tweet the image
+    api.update_status('@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title), status_id)
+    print('@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title))
 
-        # 3. Tweet the image
-        api.update_status('@<username> here\'s \'%s\' as a #videobarcode' % yt.title, status_id)
 
-    else:
-        print('unable to handle request, sorry :(')
-
+def tweet_msg(msg, status_id):
+    api.update_status(msg, status_id)
 
 
 class BotStreamer(tweepy.StreamListener):
     def on_status(self, status):
+
+        # get user/tweet info
         username = status.user.screen_name
         status_id = status.id
 
@@ -109,12 +108,17 @@ class BotStreamer(tweepy.StreamListener):
         link = msg[1]
         print(link)
 
-        tweet_image(link, username, status_id)
+        if url(link):
+            if 'youtube' in link:
+                tweet_image(link, username, status_id)
+            else:
+                tweet_msg('@%s sorry, this only works with full youtube links' % username, status_id)
+        else:
+            tweet_msg('@%s sorry, \'%s\'  not a valid url' % (username, link), status_id)
 
 
 def test():
-    var = GenerateImage()
-    var.generate('zodiac.mp4', 'output.png')
+    generate_barcode('zodiac.mp4', 'output.png')
 
 
 

@@ -14,3 +14,4 @@ This was inspired by my original barcode project which can be found [here](https
 - Downloading videos: [pytube](https://github.com/nficano/pytube)
 - Working with videos: [OpenCV](http://opencv-python-tutroals.readthedocs.io/en/latest/)
 - Twitter integration: [Tweepy](http://www.tweepy.org/)
+- URL validation: [validator](https://github.com/kvesteri/validators)
