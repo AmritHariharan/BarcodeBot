@@ -13,6 +13,7 @@ class GenerateImage:
         height = 360
         px_count = 0
         im_count = 1
+        out = image
         #print("1: %s    2: %s" % (image.shape[0], image.shape[1]))
         length = int(reader.get(cv2.CAP_PROP_FRAME_COUNT))
         q_length = floor(length / width) # NOTE: THIS CANNOT BE 0
@@ -22,7 +23,8 @@ class GenerateImage:
             print("Sorry, this video is too long, try again with a video under 10 minutes in length")
             quit() # TODO: find a more elegant way to do this
 
-        colours = []
+        im_arr = np.zeros((height, width, 3))
+        counter = 0
 
         while success:
             # 1. read in image
@@ -40,19 +42,25 @@ class GenerateImage:
                         most_freq = (count, colour)
                 
                 # 4. write to column of new image
-                colours.append(most_freq[1])
+                #colours.append((most_freq[1][0] + most_freq[1][1] + most_freq[1][2])/3)
+                #colours.append(most_freq[1])
+                for i in range(height):
+                    out[i][counter][0] = most_freq[1][0]
+                    out[i][counter][1] = most_freq[1][1]
+                    out[i][counter][2] = most_freq[1][2]
 
                 # iterate
                 px_count += 1
+                counter += 1
+            if (counter == width-1):
+                break
             im_count += 1
         im_count -= 1
 
         # 5. write new image
-        im_arr = np.array(colours)
-        im_arr = np.ascontiguousarray(np.resize(im_arr, (480, len(im_arr), 3))) 
-        print(im_arr.shape)
-        print(im_arr.T.shape)
-        final = Image.fromarray(im_arr.T, 'RGB')
+        #im_arr = np.array(colours)
+        #im_arr = np.ascontiguousarray(np.resize(im_arr, (480, len(im_arr), 3))) 
+        final = Image.fromarray(out, 'RGB')
         final.save('output.png')
         final.show()
 
