@@ -2,6 +2,12 @@
 
 This was inspired by my original barcode project which can be found [here](https://github.com/AmritHariharan/FilmBarcode2)). The idea is for this to work was a twitter bot, where people tweet youtube links at it, it downloads and processes the video, and tweets the generated barcode back at them.
 
+## Requirements
+
+```
+$ pip3 install opencv-python pytube validators tweepy
+```
+
 ## Examples
 
 ### [Castle on the Hill (Ed Sheeran)](https://www.youtube.com/watch?v=K0ibBPhiaG0)
