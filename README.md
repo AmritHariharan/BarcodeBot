@@ -10,6 +10,10 @@ $ pip3 install opencv-python pytube validators tweepy
 
 ## Examples
 
+### [Firestone (Kygo)](https://www.youtube.com/watch?v=9Sc-ir2UwGU)
+
+![Firestone (Kygo)](images/firestone.png)
+
 ### [Castle on the Hill (Ed Sheeran)](https://www.youtube.com/watch?v=K0ibBPhiaG0)
 
 ![Castle on the Hill (Ed Sheeran)](images/castle.png)
@@ -18,6 +22,7 @@ $ pip3 install opencv-python pytube validators tweepy
 - [x] Get barcode generation working
 - [x] Add youtube-dl functionality
 - [x] Integrate twitter
+- [ ] Fix downloading and naming scheme, seems to be breaking the program
 - [ ] Put in a Docker container(?)
 - [ ] Get it hosted on AWS/Google Cloud/Azure(???)
 
