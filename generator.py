@@ -110,7 +110,11 @@ def tweet_image(link, username, status_id):
 
 	# 3. Tweet the image
 	print('Tweeting image to %s' % username)
-	api.update_with_media(outfile, status='@{} here\'s \'{}\' as a #videobarcode'.format(username, yt.title), in_reply_to_status_id=status_id)
+	api.update_with_media(
+	        outfile, 
+	        status='@{} here\'s \'{}\' as a #videobarcode'.format(username, yt.title),
+	        in_reply_to_status_id=status_id
+	)
 	print('@%s here\'s \'%s\' as a #videobarcode' % (username, yt.title))
 
 
@@ -150,11 +154,14 @@ def test():
 	generate_barcode('stay.mp4', 'stay.png')
 
 
-test()
-
-#myStreamListener = BotStreamer()
+#test()
 
 # Construct the Stream instance
-#stream = tweepy.Stream(auth, myStreamListener)
-#print('running...')
-#stream.filter(track=['@videobarcode'])
+myStreamListener = BotStreamer()
+stream = tweepy.Stream(auth, myStreamListener)
+print('running...')
+
+# Start tracking
+stream.filter(track=['@videobarcode'])
+
+
