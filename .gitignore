@@ -3,3 +3,4 @@
 *.png
 secrets.py
 !images/*.png
+__pycache__/*
