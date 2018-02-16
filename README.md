@@ -22,8 +22,9 @@ $ pip3 install opencv-python pytube validators tweepy
 - [x] Get barcode generation working
 - [x] Add youtube-dl functionality
 - [x] Integrate twitter
-- [ ] Fix downloading and naming scheme, seems to be breaking the program
-- [ ] Put in a Docker container(?)
+- [x] Fix downloading, pytube doesn't seem to like my options
+- [ ] Fix  naming scheme, seems to be breaking the program if the filename has a `.` in it
+- [ ] Put in a Docker container #webscale (?)
 - [ ] Get it hosted on AWS/Google Cloud/Azure(???)
 
 ## Tools Used
