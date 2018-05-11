@@ -4,3 +4,4 @@
 secrets.py
 !images/*.png
 __pycache__/*
+venv/

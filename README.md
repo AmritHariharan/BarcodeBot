@@ -5,6 +5,13 @@ This was inspired by my original barcode project which can be found [here](https
 ## Requirements
 
 ```
+# Set up virtualenv (optional)
+$ python -m virtualenv VENV_NAME
+
+# Activate virtualenv
+$ source VENV_NAME/bin/activate
+
+# Install packages
 $ pip3 install opencv-python pytube validators tweepy
 ```
 
