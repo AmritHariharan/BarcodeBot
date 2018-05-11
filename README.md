@@ -4,7 +4,7 @@ This was inspired by my original barcode project which can be found [here](https
 
 ## Requirements
 
-```
+``` bash
 # Set up virtualenv (optional)
 $ python -m virtualenv VENV_NAME
 
