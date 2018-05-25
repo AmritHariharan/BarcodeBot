@@ -14,6 +14,11 @@ pipeline {
 wget "https://i.imgur.com/ae4xtKY.jpg"'''
           }
         }
+        stage('sleep test') {
+          steps {
+            sleep 30
+          }
+        }
       }
     }
     stage('do something?!?!') {
