@@ -17,6 +17,8 @@ wget "https://i.imgur.com/ae4xtKY.jpg"'''
         stage('sleep test') {
           steps {
             sleep 30
+            sh '''pwd
+ls'''
           }
         }
       }
