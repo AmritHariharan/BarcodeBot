@@ -9,3 +9,5 @@ validators
 
 # Interact with Twitter
 tweepy
+
+Pillow
