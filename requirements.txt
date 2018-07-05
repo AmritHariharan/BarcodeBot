@@ -1,13 +1,5 @@
-# Interact with videos
 opencv-python
-
-# Interact with YouTube
 pytube
-
-# Ensure valid URL
 validators
-
-# Interact with Twitter
 tweepy
-
 Pillow
