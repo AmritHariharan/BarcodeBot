@@ -26,10 +26,7 @@ $ pip3 install opencv-python pytube validators tweepy
 ![Castle on the Hill (Ed Sheeran)](images/castle.png)
 
 ## Todo:
-- [x] Get barcode generation working
-- [x] Add youtube-dl functionality
-- [x] Integrate twitter
-- [x] Fix downloading, pytube doesn't seem to like my options
-- [ ] Fix  naming scheme, seems to be breaking the program if the filename has a `.` in it
+- [ ] Fix naming scheme, seems to be breaking the program if the filename has a `.` in it
+- [ ] Turn this into a microservice
 - [ ] Put in a Docker container #webscale (?)
 - [ ] Get it hosted on AWS/Google Cloud/Azure(???)
