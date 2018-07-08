@@ -1,4 +1,3 @@
-opencv-python
 pytube
 validators
 tweepy

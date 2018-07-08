@@ -19,11 +19,11 @@ $ pip3 install opencv-python pytube validators tweepy
 
 ### [Firestone (Kygo)](https://www.youtube.com/watch?v=9Sc-ir2UwGU)
 
-![Firestone (Kygo)](images/firestone.png)
+![Firestone (Kygo)](static/firestone_kygo.png)
 
 ### [Castle on the Hill (Ed Sheeran)](https://www.youtube.com/watch?v=K0ibBPhiaG0)
 
-![Castle on the Hill (Ed Sheeran)](images/castle.png)
+![Castle on the Hill (Ed Sheeran)](static/castle_edsheeran.png)
 
 ## Todo:
 - [ ] Fix naming scheme, seems to be breaking the program if the filename has a `.` in it
