@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pytube = "*"
+validators = "*"
+tweepy = "*"
+Pillow = "*"
+Flask = "*"
+Flask-Bootstrap = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

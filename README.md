@@ -2,17 +2,14 @@
 
 This was inspired by my original barcode project which can be found [here](https://github.com/AmritHariharan/FilmBarcode2)). The idea is for this to work was a twitter bot, where people tweet youtube links at it, it downloads and processes the video, and tweets the generated barcode back at them.
 
-## Requirements
+## Setup
 
 ``` bash
-# Set up virtualenv (optional)
-$ python -m virtualenv VENV_NAME
+# Using pipenv
+pipenv install --python 3.7 -r requirements.txt
 
-# Activate virtualenv
-$ source VENV_NAME/bin/activate
-
-# Install packages
-$ pip3 install opencv-python pytube validators tweepy
+# Start the app
+pipenv run python app.py
 ```
 
 ## Examples
