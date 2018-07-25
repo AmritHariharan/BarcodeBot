@@ -21,8 +21,3 @@ pipenv run python app.py
 ### [Castle on the Hill (Ed Sheeran)](https://www.youtube.com/watch?v=K0ibBPhiaG0)
 
 ![Castle on the Hill (Ed Sheeran)](static/images/castle_edsheeran.png)
-
-## Todo:
-- [ ] Fix naming scheme, seems to be breaking the program if the filename has a `.` in it
-- [ ] Put in a Docker container #webscale (?)
-- [ ] Get it hosted on AWS/Google Cloud/Azure(???)

@@ -35,22 +35,21 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has a file
-        if 'file' not in request.files:
-            flash('No file in request')
-            return redirect(request.url)
-        file = request.files['file']
-        print(file)
-        # if user does not select file, browser also submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(path.join(app.config['UPLOAD_FOLDER'], filename))
-        return redirect(url_for('start'))
+@app.route('/', methods=['POST'])
+def process_file():
+    # check if the post request has a file
+    if 'file' not in request.files:
+        flash('No file in request')
+        return redirect(request.url)
+    file = request.files['file']
+    print(file)
+    # if user does not select file, browser also submit a empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(path.join(app.config['UPLOAD_FOLDER'], filename))
+    return redirect(url_for('start'))
 
 
 if __name__ == '__main__':
