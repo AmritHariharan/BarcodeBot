@@ -4,51 +4,66 @@
     <title>Barcode Generator</title>
 </head>
 <body>
-    <!-- Title -->
-    <h1>Amrit's Barcode Generator</h1>
+<!-- Title -->
+<h1>Amrit's Barcode Generator</h1>
 
-    <!-- Input Field -->
-    <form action="{{ url_for('generate_barcode') }}" method="post">
-        <div class="input-group mb-3">
-            <input type="text" name="url" class="form-control" placeholder="Add URL here" aria-label="url input"
-                   aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Generate Barcode</button>
-            </div>
-        </div>
-    </form>
-
-    <!-- Images -->
-    {% if images %}
-        {% for image in images: %}
-            <img src="static/images/{{ image }}" width="200">
+<!-- Flashed Messages -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <h3>{{ message }}</h3>
         {% endfor %}
     {% endif %}
+{% endwith %}
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#errorModal">
-        Launch demo modal
-    </button>
+<!-- Input Field -->
+<form action="{{ url_for('generate_barcode') }}" method="post">
+    <div class="input-group mb-3">
+        <input type="text" name="url" class="form-control" placeholder="Add URL here" aria-label="url input"
+               aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Generate Barcode</button>
+        </div>
+    </div>
+</form>
+
+<form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button type="submit">Upload</button>
+</form>
+
+<!-- Images -->
+{% if images %}
+    {% for image in images %}
+        <img src="static/images/{{ image }}" width="200">
+    {% endfor %}
+{% endif %}
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#errorModal">
+    Launch demo modal
+</button>
 
 
-
-    <!-- Error Modal -->
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
-                </div>
-                <div class="modal-body">
-                    <p>The URL you have input is invalid\nPlease try again.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+            </div>
+            <div class="modal-body">
+                <p>The URL you have input is invalid\nPlease try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
 </body>

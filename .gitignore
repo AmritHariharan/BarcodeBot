@@ -1,6 +1,7 @@
 .idea/*
 venv/
 __pycache__/*
+uploads/*
 *.mp4
 *.m4v
 secrets.py
