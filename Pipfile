@@ -11,6 +11,7 @@ Pillow = "*"
 Flask = "*"
 Flask-Bootstrap = "*"
 opencv-python = "*"
+werkzeug = "*"
 
 [dev-packages]
 
