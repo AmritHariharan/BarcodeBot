@@ -11,7 +11,7 @@ from validators import url
 from sys import stdout
 
 
-class BarcodeGenerator:
+class Generator:
 
     # Get the barcode from a video
     def generate_barcode(self, filename, output_filename):
@@ -30,15 +30,7 @@ class BarcodeGenerator:
         frame_count = frame_count / 2  # TODO: Find a better fix than this...
         q_length = floor(frame_count / width)  # NOTE: THIS CANNOT BE 0
 
-        # Check that its not longer than 10 mins
-        if frame_count > 54000:
-            print("Sorry, this video is too long, try again with a video under 30 minutes in length")
-            quit()  # TODO: find a more elegant way to do this
-
-        # Check that its not too short
-        if frame_count < width:
-            print('Sorry, this video is too short (or possibly too high res)')
-            quit()
+        self.check_video_dimensions(frame_count, width)
 
         counter = 0
 
@@ -50,26 +42,11 @@ class BarcodeGenerator:
                 counter += 1
                 print('\rProgress: %d/%d' % (counter, width), end='\r')
                 stdout.flush()
-                for j in range(height):
-                    pil_im = Image.fromarray(image[j].reshape(1, width, 3))  # get row of image
-
-                    # 2. get enumerated list of colours
-                    im_colours = pil_im.getcolors(width)
-
-                    # 3. get most dominant colour in row
-                    most_freq = im_colours[0]
-                    for count, colour in im_colours:
-                        if count > most_freq[0]:
-                            most_freq = (count, colour)
-
-                    # 4. write to of new image
-                    out[j][counter - 1][0] = most_freq[1][0]
-                    out[j][counter - 1][1] = most_freq[1][1]
-                    out[j][counter - 1][2] = most_freq[1][2]
+                self.write_column(counter, width, height, image, out)
 
             # break if you reach the end of the image array
             if counter == width:
-                print('at width')
+                print('Finished processing image.')
                 break
             im_count += 1
 
@@ -84,7 +61,36 @@ class BarcodeGenerator:
         final = Image.fromarray(out, 'RGB')
         final.save(output_filename)
 
+    def write_column(self, column, width, height, image, final_image):
+        for row in range(height):
+            # 1. get row of image
+            pil_im = Image.fromarray(image[row].reshape(1, width, 3))
+
+            # 2. get enumerated list of colours
+            im_colours = pil_im.getcolors(width)
+
+            # 3. get most dominant colour in row
+            most_freq = im_colours[0]
+            for count, colour in im_colours:
+                if count > most_freq[0]:
+                    most_freq = (count, colour)
+
+            # 4. write to of new image
+            final_image[row][column - 1][0] = most_freq[1][0]
+            final_image[row][column - 1][1] = most_freq[1][1]
+            final_image[row][column - 1][2] = most_freq[1][2]
+
+    def check_video_dimensions(self, frame_count, width):
+        # Check that its not longer than 10 mins
+        if frame_count > 54000:
+            print("Sorry, this video is too long, try again with a video under 30 minutes in length")
+            quit()  # TODO: find a more elegant way to do this
+        # Check that its not too short
+        if frame_count < width:
+            print('Sorry, this video is too short (or possibly too high res)')
+            quit()
+
 
 if __name__ == '__main__':
-    generator = BarcodeGenerator()
+    generator = Generator()
     generator.generate_barcode('firestone.mp4', 'firestone.png')
