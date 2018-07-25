@@ -1,8 +1,8 @@
 from PIL import Image
 import cv2
 from math import floor
-
 from sys import stdout
+from os.path import splitext
 
 
 def check_video_dimensions(frame_count, width):
@@ -32,9 +32,13 @@ def write_column(column, width, height, image, final_image):
         final_image[row][column - 1] = most_freq[1]
 
 
+def convert_filename(filename):
+    return splitext(filename)[0] + '.png'
+
+
 class Generator:
 
-    def generate_barcode(self, filename, output_filename, debug=False):
+    def generate_barcode(self, filename, debug=False):
         print('Generating a barcode')
 
         # Setup
@@ -44,7 +48,6 @@ class Generator:
         frame_height = len(frame)
         frame_width = len(frame[0])
         result_array = frame
-
         frame_count = int(reader.get(cv2.CAP_PROP_FRAME_COUNT)) / 2
         queue_length = floor(frame_count / frame_width)  # NOTE: THIS CANNOT BE 0
 
@@ -59,7 +62,8 @@ class Generator:
             if queue_counter == queue_length:
                 queue_counter = 0
                 num_processed_images += 1
-                print('\rProgress: %d/%d' % (num_processed_images, frame_width), end='\r')
+                yield '%.f'.format(100 * num_processed_images / frame_width)
+                print('\rProgress: %.f%%' % (100 * num_processed_images / frame_width), end='\r')
                 stdout.flush()
                 write_column(num_processed_images, frame_width, frame_height, frame, result_array)
 
@@ -75,12 +79,12 @@ class Generator:
             print('q_length: {}'.format(queue_length))
             print('counter: {}'.format(num_processed_images))
             print('width: {}'.format(frame_width))
-            final_image.save(output_filename)
 
+        final_image.save(convert_filename(filename))
         reader.release()
-        return final_image
 
 
 if __name__ == '__main__':
     generator = Generator()
-    generator.generate_barcode('firestone.mp4', 'firestone.png', debug=True)
+    generator.generate_barcode('firestone.mp4', debug=True)
+    # generator.generate_barcode('sorryToBotherYou.mp4', debug=True)
