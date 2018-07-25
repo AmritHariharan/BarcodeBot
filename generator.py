@@ -82,7 +82,7 @@ def generate_barcode(filename, celery, debug=False):
     final_image.save(convert_filename(filename))
     reader.release()
     return {'current': num_processed_images, 'total': frame_width, 'result': convert_filename(filename),
-            'status': 'COMPLETE'}
+            'status': 'Task Complete!'}
 
 
 if __name__ == '__main__':

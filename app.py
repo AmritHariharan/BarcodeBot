@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from werkzeug.utils import secure_filename
 from os import listdir
 from os.path import splitext, join
-from generator import Generator
+from generator import generate_barcode
 from celery import Celery
 
 STATIC_IMAGES_DIR = 'static/images/examples'
@@ -11,9 +11,15 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'mp4', 'mov', 'mp3'}
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'super-secret-key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Celery config
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
 app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
 Bootstrap(app)
 
 
@@ -23,18 +29,14 @@ def start():
     return render_template('base.html', images=listdir(STATIC_IMAGES_DIR))
 
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def convert_filename(filename):
-    return splitext(filename)[0] + '.png'
-
-
 @celery.task(bind=True)
 def generate_image_task(self, filename):
     return generate_barcode(filename, self)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/upload', methods=['POST'])
