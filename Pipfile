@@ -9,6 +9,7 @@ Flask = "*"
 Flask-Bootstrap = "*"
 opencv-python = "*"
 werkzeug = "*"
+celery = "*"
 
 [dev-packages]
 
