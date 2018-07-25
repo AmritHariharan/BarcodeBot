@@ -4,3 +4,4 @@ tweepy
 Pillow
 flask
 flask-bootstrap
+opencv-python
