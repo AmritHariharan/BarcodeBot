@@ -1,7 +1,0 @@
-pytube
-validators
-tweepy
-Pillow
-flask
-flask-bootstrap
-opencv-python
