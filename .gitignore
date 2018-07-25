@@ -5,3 +5,4 @@ uploads/*
 *.mp4
 *.m4v
 secrets.py
+**.DS_Store**

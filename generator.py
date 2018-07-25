@@ -36,55 +36,55 @@ def convert_filename(filename):
     return splitext(filename)[0] + '.png'
 
 
-class Generator:
+def generate_barcode(filename, celery, debug=False):
+    print('Generating a barcode')
 
-    def generate_barcode(self, filename, debug=False):
-        print('Generating a barcode')
+    # Setup
+    reader = cv2.VideoCapture(filename)
+    success, frame = reader.read()
+    success = True
+    frame_height = len(frame)
+    frame_width = len(frame[0])
+    result_array = frame
+    frame_count = int(reader.get(cv2.CAP_PROP_FRAME_COUNT)) / 2
+    queue_length = floor(frame_count / frame_width)  # NOTE: THIS CANNOT BE 0
 
-        # Setup
-        reader = cv2.VideoCapture(filename)
+    check_video_dimensions(frame_count, frame_width)
+
+    queue_counter = 0
+    num_processed_images = 0
+    while success:
+        queue_counter += 1
         success, frame = reader.read()
-        success = True
-        frame_height = len(frame)
-        frame_width = len(frame[0])
-        result_array = frame
-        frame_count = int(reader.get(cv2.CAP_PROP_FRAME_COUNT)) / 2
-        queue_length = floor(frame_count / frame_width)  # NOTE: THIS CANNOT BE 0
-
-        check_video_dimensions(frame_count, frame_width)
-
-        queue_counter = 0
-        num_processed_images = 0
-        while success:
-            queue_counter += 1
-            # 1. read in image
-            success, frame = reader.read()
-            if queue_counter == queue_length:
-                queue_counter = 0
-                num_processed_images += 1
-                yield '%.f'.format(100 * num_processed_images / frame_width)
-                print('\rProgress: %.f%%' % (100 * num_processed_images / frame_width), end='\r')
-                stdout.flush()
-                write_column(num_processed_images, frame_width, frame_height, frame, result_array)
+        if queue_counter == queue_length:
+            queue_counter = 0
+            num_processed_images += 1
+            if not debug:
+                celery.update_state(state='PROCESSING',
+                                    meta={'current': num_processed_images, 'total': frame_width})
+            print('\rProgress: %.f%%' % (100 * num_processed_images / frame_width), end='\r')
+            stdout.flush()
+            write_column(num_processed_images, frame_width, frame_height, frame, result_array)
 
             # break if you reach the end of the image array
             if num_processed_images == frame_width:
                 print('Finished processing image.')
-                break
+            break
 
-        final_image = Image.fromarray(result_array, 'RGB')
+    final_image = Image.fromarray(result_array, 'RGB')
 
-        if debug:
-            print('length: {}'.format(frame_count))
-            print('q_length: {}'.format(queue_length))
-            print('counter: {}'.format(num_processed_images))
-            print('width: {}'.format(frame_width))
+    if debug:
+        print('length: {}'.format(frame_count))
+        print('q_length: {}'.format(queue_length))
+        print('counter: {}'.format(num_processed_images))
+        print('width: {}'.format(frame_width))
 
-        final_image.save(convert_filename(filename))
-        reader.release()
+    final_image.save(convert_filename(filename))
+    reader.release()
+    return {'current': num_processed_images, 'total': frame_width, 'result': convert_filename(filename),
+            'status': 'COMPLETE'}
 
 
 if __name__ == '__main__':
-    generator = Generator()
-    generator.generate_barcode('firestone.mp4', debug=True)
+    generate_barcode('firestone.mp4', False, debug=True)
     # generator.generate_barcode('sorryToBotherYou.mp4', debug=True)
