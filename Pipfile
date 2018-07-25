@@ -4,9 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pytube = "*"
-validators = "*"
-tweepy = "*"
 Pillow = "*"
 Flask = "*"
 Flask-Bootstrap = "*"
