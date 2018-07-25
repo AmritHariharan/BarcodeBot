@@ -1,11 +1,6 @@
-# Image/video processing stuff
 from PIL import Image
 import cv2
 from math import floor
-
-# YouTube
-from pytube import YouTube
-from validators import url
 
 from sys import stdout
 
@@ -82,6 +77,7 @@ class Generator:
             print('width: {}'.format(frame_width))
             final_image.save(output_filename)
 
+        reader.release()
         return final_image
 
 
