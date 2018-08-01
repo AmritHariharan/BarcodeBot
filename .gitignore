@@ -4,5 +4,6 @@ __pycache__/*
 uploads/*
 *.mp4
 *.m4v
+*.rdb
 secrets.py
 **.DS_Store**
