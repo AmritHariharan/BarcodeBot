@@ -36,7 +36,7 @@ def convert_filename(filename):
     return splitext(filename)[0] + '.png'
 
 
-def generate_barcode(filename, celery, debug=False):
+def generate_barcode(filename, debug=True):
     print('Generating a barcode')
 
     # Setup
@@ -59,9 +59,6 @@ def generate_barcode(filename, celery, debug=False):
         if queue_counter == queue_length:
             queue_counter = 0
             num_processed_images += 1
-            if not debug:
-                celery.update_state(state='PROCESSING',
-                                    meta={'current': num_processed_images, 'total': frame_width})
             print('\rProgress: %.f%%' % (100 * num_processed_images / frame_width), end='\r')
             stdout.flush()
             write_column(num_processed_images, frame_width, frame_height, frame, result_array)
@@ -69,7 +66,7 @@ def generate_barcode(filename, celery, debug=False):
             # break if you reach the end of the image array
             if num_processed_images == frame_width:
                 print('Finished processing image.')
-            break
+                break
 
     final_image = Image.fromarray(result_array, 'RGB')
 
@@ -81,10 +78,8 @@ def generate_barcode(filename, celery, debug=False):
 
     final_image.save(convert_filename(filename))
     reader.release()
-    return {'current': num_processed_images, 'total': frame_width, 'result': convert_filename(filename),
-            'status': 'Task Complete!'}
 
 
 if __name__ == '__main__':
-    generate_barcode('firestone.mp4', False, debug=True)
-    # generator.generate_barcode('sorryToBotherYou.mp4', debug=True)
+    generate_barcode('firestone.mp4')
+    # generator.generate_barcode('sorryToBotherYou.mp4')
