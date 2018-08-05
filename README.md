@@ -16,8 +16,8 @@ pipenv run python app.py
 
 ### [Firestone (Kygo)](https://www.youtube.com/watch?v=9Sc-ir2UwGU)
 
-![Firestone (Kygo)](static/sample_images/firestone_kygo.png)
+![Firestone (Kygo)](static/images/examples/firestone_kygo.png)
 
 ### [Castle on the Hill (Ed Sheeran)](https://www.youtube.com/watch?v=K0ibBPhiaG0)
 
-![Castle on the Hill (Ed Sheeran)](static/sample_images/castle_edsheeran.png)
+![Castle on the Hill (Ed Sheeran)](static/images/examples/castle_edsheeran.png)
