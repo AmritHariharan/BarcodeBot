@@ -36,11 +36,11 @@ def convert_filename(filename):
     return splitext(filename)[0] + '.png'
 
 
-def generate_barcode(filename, debug=True):
+def generate_barcode(video_file, debug=True):
     print('Generating a barcode')
 
     # Setup
-    reader = cv2.VideoCapture(filename)
+    reader = cv2.VideoCapture(video_file)
     success, frame = reader.read()
     success = True
     frame_height = len(frame)
@@ -76,9 +76,9 @@ def generate_barcode(filename, debug=True):
         print('counter: {}'.format(num_processed_images))
         print('width: {}'.format(frame_width))
 
-    final_image.save(convert_filename(filename))
+    final_image.save(convert_filename(video_file))
     reader.release()
-    return filename
+    return video_file
 
 
 if __name__ == '__main__':

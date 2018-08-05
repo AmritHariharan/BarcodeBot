@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from werkzeug.utils import secure_filename
 from os import listdir
 from os.path import splitext, join
-from generator import generate_barcode
+from generator import generate_barcode, convert_filename
 from rq import Queue
 from rq.job import Job
 from worker import conn
@@ -52,10 +52,11 @@ def upload():
             args=(video_file,),
             result_ttl=21600
         )
-        return redirect(url_for('start', job_id=job.get_id()))
+        return redirect(url_for('start', filename=convert_filename(video_file), job_id=job.get_id()))
     return redirect(url_for('start', error='Sorry, something went wrong while uploading'))
 
 
+# Not sure if i actually need this...
 @app.route('/status/<job_id>', methods=['GET'])
 def status(job_id):
     job = Job.fetch(job_id, connection=conn)
