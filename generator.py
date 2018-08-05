@@ -76,9 +76,11 @@ def generate_barcode(video_file, debug=True):
         print('counter: {}'.format(num_processed_images))
         print('width: {}'.format(frame_width))
 
-    final_image.save(convert_filename(video_file))
+    image_file = convert_filename(video_file)
+    final_image.save(image_file)
+    print(image_file)
     reader.release()
-    return video_file
+    return image_file
 
 
 if __name__ == '__main__':
