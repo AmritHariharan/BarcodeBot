@@ -78,6 +78,7 @@ def generate_barcode(filename, debug=True):
 
     final_image.save(convert_filename(filename))
     reader.release()
+    return filename
 
 
 if __name__ == '__main__':

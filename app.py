@@ -4,6 +4,9 @@ from werkzeug.utils import secure_filename
 from os import listdir
 from os.path import splitext, join
 from generator import generate_barcode
+from rq import Queue
+from rq.job import Job
+from worker import conn
 
 STATIC_IMAGES_DIR = 'static/images/examples'
 UPLOAD_FOLDER = 'uploads'
@@ -12,6 +15,8 @@ ALLOWED_EXTENSIONS = {'mp4', 'mov', 'mp3'}
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret-key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+q = Queue(connection=conn)
 
 Bootstrap(app)
 
@@ -41,8 +46,29 @@ def upload():
         video_file = join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
         file.save(video_file)
         print(video_file)
-        generate_barcode(video_file)
-    return redirect(url_for('start'))
+        # Job data will be kept for 6 hours
+        job = q.enqueue_call(
+            generate_barcode,
+            args=(video_file,),
+            result_ttl=21600
+        )
+        return redirect(url_for('start', job_id=job.get_id()))
+    return redirect(url_for('start', error='Sorry, something went wrong while uploading'))
+
+
+@app.route('/status/<job_id>', methods=['GET'])
+def status(job_id):
+    job = Job.fetch(job_id, connection=conn)
+    if job.is_queued:
+        return 'In queue...', 202
+    elif job.is_started:
+        return 'Processing image...', 202
+    elif job.is_finished:
+        return job.result, 200
+    elif job.is_failed:
+        return job.result, 400
+    else:
+        return 'Something unexpected happened...', 400
 
 
 if __name__ == '__main__':
