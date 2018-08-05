@@ -11,6 +11,7 @@ opencv-python = "*"
 werkzeug = "*"
 redis = "*"
 rq = "*"
+rq-dashboard = "*"
 
 [dev-packages]
 
