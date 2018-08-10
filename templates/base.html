@@ -35,8 +35,6 @@
     </div>
 </form>
 
-<div id="progress"></div>
-
 <!-- Images -->
 {% if images %}
     {% for image in images %}
@@ -44,23 +42,8 @@
     {% endfor %}
 {% endif %}
 
-<!-- Loading Modal -->
-<div class="modal fade" id="loadingModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Loading...</h4>
-            </div>
-            <div class="modal-body">
-                <p>BARCODE IMAGE HERE</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loadingModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#finishedProcessingModal">
     Launch demo modal
 </button>
 
