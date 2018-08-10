@@ -56,20 +56,19 @@ def upload():
     return redirect(url_for('start', error='Sorry, something went wrong while uploading'))
 
 
-# Not sure if i actually need this...
 @app.route('/status/<job_id>', methods=['GET'])
 def status(job_id):
     job = Job.fetch(job_id, connection=conn)
     if job.is_queued:
-        return 'In queue...', 202
+        return 'QUEUED', 201
     elif job.is_started:
-        return 'Processing image...', 202
+        return job.meta.progress, 202
     elif job.is_finished:
         return job.result, 200
     elif job.is_failed:
-        return job.result, 400
+        return job.result, 500
     else:
-        return 'Something unexpected happened...', 400
+        return 'ERROR', 500
 
 
 if __name__ == '__main__':
