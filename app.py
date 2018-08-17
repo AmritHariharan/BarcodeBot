@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from werkzeug.utils import secure_filename
 from os import listdir
-from os.path import splitext, join
+from os.path import join
 from generator import generate_barcode, convert_filename
 from rq import Queue
 from rq.job import Job
