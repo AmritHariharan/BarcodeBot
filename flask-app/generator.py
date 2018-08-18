@@ -2,7 +2,9 @@ from PIL import Image
 import cv2
 from math import floor
 from sys import stdout
-from os.path import splitext
+from os.path import splitext, join
+
+from werkzeug.utils import secure_filename
 
 
 def check_video_dimensions(frame_count, width):
@@ -81,6 +83,16 @@ def generate_barcode(video_file, debug=True):
     print(image_file)
     reader.release()
     return image_file
+
+
+def process_video(file):
+    print(file.filename)
+    video_filename = join('uploads', secure_filename(file.filename))
+    print(video_filename)
+    print('here!!')
+    file.save(video_filename)
+    print('Generating barcode')
+    generate_barcode(video_filename)
 
 
 if __name__ == '__main__':

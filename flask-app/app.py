@@ -7,12 +7,8 @@ from os.path import join
 from rq import Queue
 from rq.job import Job
 
-from generator import convert_filename, generate_barcode
-from settings import REDIS_HOST, REDIS_PORT
-
-STATIC_IMAGES_DIR = 'static/images/examples'
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'mp4', 'mov', 'mp3'}
+from generator import convert_filename, process_video
+from settings import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret-key'
@@ -45,16 +41,16 @@ def upload():
     if file.filename == '':
         flash('No selected file')
     if file and allowed_file(file.filename):
-        video_file = join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
-        file.save(video_file)
-        print(video_file)
-        # Job data will be kept for 6 hours
+        video_filename = join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+        # file.save(video_file)
+        print(video_filename)
+        # Job data will be kept for 1 hour
         job = q.enqueue_call(
-            generate_barcode,
-            args=(video_file,),
-            result_ttl=21600
+            process_video,
+            args=(file,),
+            result_ttl=3600
         )
-        return redirect(url_for('start', filename=convert_filename(video_file), job_id=job.get_id()))
+        return redirect(url_for('start', filename=convert_filename(video_filename), job_id=job.get_id()))
     return redirect(url_for('start', error='Sorry, something went wrong while uploading'))
 
 
