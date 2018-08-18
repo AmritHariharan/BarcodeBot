@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
+from redis import StrictRedis
 from werkzeug.utils import secure_filename
 from os import listdir
 from os.path import join
-from generator import generate_barcode, convert_filename
 from rq import Queue
 from rq.job import Job
-from worker import conn
+
+from generator import convert_filename, generate_barcode
+from settings import REDIS_HOST, REDIS_PORT
 
 STATIC_IMAGES_DIR = 'static/images/examples'
 UPLOAD_FOLDER = 'uploads'
@@ -16,7 +18,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret-key'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-q = Queue(connection=conn)
+q = Queue(connection=StrictRedis(host=REDIS_HOST, port=REDIS_PORT))
 
 Bootstrap(app)
 
@@ -72,4 +74,4 @@ def status(job_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=8080, debug=True)
