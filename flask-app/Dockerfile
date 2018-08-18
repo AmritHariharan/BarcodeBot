@@ -1,12 +1,14 @@
-FROM ubuntu:18.04
+FROM python:3.7.0-alpine3.8
 
-RUN apt update && apt install python3.7 && pip3 install pipenv
+RUN apk update
 
-COPY ../docker /app
 WORKDIR /app
 
-RUN pipenv install --system
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY . .
 
 EXPOSE 8080
 
-CMD ["python3", "app.py"]
+CMD ["python", "app.py"]
