@@ -1,3 +1,3 @@
-FROM unknownarcher/barcodebot:latest
+FROM unknownarcher/barcodebot:v1
 
-CMD ["rq", "worker"]
+CMD ["rq", "worker", "--config", "settings"]
