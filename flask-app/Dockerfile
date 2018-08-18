@@ -1,6 +1,6 @@
-FROM python:3.7.0-alpine3.8
+FROM python:3.7-slim
 
-RUN apk update
+RUN apt-get update
 
 WORKDIR /app
 
